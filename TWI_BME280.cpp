@@ -179,7 +179,8 @@ void TWI_BME280::compensatePressure(void) {
     var1 = (((calibrationData.dig_P3 * (((var1>>2) * (var1>>2)) >> 13 )) >> 3) + ((((int32_t)calibrationData.dig_P2) * var1)>>1))>>18;
     var1 =((((32768+var1))*((int32_t)calibrationData.dig_P1))>>15);
     if (var1 == 0) {
-        return 0; // avoid exception caused by division by zero
+        pressure = 0; // avoid exception caused by division by zero
+        return;
     }
     p = (((uint32_t)(((int32_t)1048576)-adc_P)-(var2>>12)))*3125;
     if (p < 0x80000000) {

@@ -186,10 +186,13 @@ public:
 
     float getTemperature_C(void);  // return temperature in celsius
     float getTemperature_F(void);  // return temperature in fahrenheit
+    uint16_t getTemperature(void);  // return temp in celsius * 100
     float getPressure_HP(void);     // return pressure in hPa
-    float getPressure_Pa(void);
+    float getPressure_Pa(void);     // return pressure in Pa
+    uint32_t getPressure(void);     // return pressure in Pa *100
     float getPressure_inHg(void);   // return pressure in inHg
     float getHumidity(void);     // return humidity
+    uint32_t getHumidity_int(void); // return humidty as int16_t * 1024
     float getAltitude_m(void);  // altitude in meters
     float getAltitude_ft(void); // altitude in feet
 
@@ -200,6 +203,7 @@ private:
     float tempOffset;             // stores user defined temp offset
     
     float temperature,pressure, humidity;
+    uint16_t temp; uint32_t press, hum;
     int32_t t_fine;
 
     void compensateTemperature(void);   //compensate temperature

@@ -97,6 +97,11 @@ float TWI_BME280::getTemperature_F(void) {
     return (temperature +(tempOffset))*9/5+32;
 }
 
+uint16_t TWI_BME280::getTemperature(void) {
+
+    return temp;
+}
+
 float TWI_BME280::getPressure_HP(void) {
     
     return pressure/100.0;
@@ -112,9 +117,19 @@ float TWI_BME280::getPressure_Pa(void) {
     return pressure;
 }
 
+uint32_t TWI_BME280::getPressure(void) {
+
+    return press;
+}
+
 float TWI_BME280::getHumidity(void) {
 
     return humidity;
+}
+
+uint32_t TWI_BME280::getHumidity_int(void) {
+
+    return hum;
 }
 
 float TWI_BME280::getAltitude_m(void) {
@@ -165,6 +180,7 @@ void TWI_BME280::compensateTemperature(void) {
 
     t = ((t_fine * 5 + 128) >> 8);
     temperature = (float)t/100.0;
+    temp = t;
 }
 
 void TWI_BME280::compensatePressure(void) {
@@ -192,6 +208,7 @@ void TWI_BME280::compensatePressure(void) {
     var2 = (((int32_t)(p>>2)) * ((int32_t)calibrationData.dig_P8))>>13;
     p = (uint32_t)((int32_t)p + ((var1 + var2 + calibrationData.dig_P7) >> 4));
     pressure = (float)p;
+    press = p;
 }
 
 void TWI_BME280::compensateHumidity(void) {
@@ -207,8 +224,8 @@ void TWI_BME280::compensateHumidity(void) {
     v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
     v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
     
-    humidity = (v_x1_u32r>>12)/1024.0;
-    // humidity /= 1024.0;
+    hum = (v_x1_u32r>>12);
+    humidity = hum/1024.0;
 }
 
 void TWI_BME280::write8(uint8_t reg, uint8_t value) {
